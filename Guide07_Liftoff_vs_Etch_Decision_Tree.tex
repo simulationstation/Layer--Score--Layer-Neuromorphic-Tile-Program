@@ -1,0 +1,151 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 07: Lift-off vs Etch Decision Tree (with Critical-Edge Fence Controls)
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 07: Lift-off vs Etch Decision Tree},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 07}
+\newcommand{\GuideTitle}{Lift-off vs Etch Decision Tree (Critical-Edge Controls)}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Standardize pattern transfer choices (lift-off versus etch) to reduce yield loss and ambiguous failure modes. This guide explicitly addresses metal edge residues (``fences'') and topography spikes as first-order hazards when thin switching dielectrics are deposited on top of patterned metals.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Why This Guide Exists (Layperson Summary)}
+Pattern transfer is how you turn a ``photo'' of your pattern (lithography resist) into real metal or dielectric geometry.
+
+Two common approaches:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Lift-off:} deposit metal over patterned resist, then dissolve resist so unwanted metal ``lifts off.''
+\item \textbf{Etch:} deposit a blanket film, pattern resist, then remove exposed film by etching.
+\end{itemize}
+
+Both can work, but they fail in different ways. For memristive devices, small edge defects can dominate switching behavior and produce misleading ``shorts/opens'' maps.
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Decision tree: when lift-off is preferred vs when etch is preferred.
+\item Inspection checklist after pattern transfer.
+\item Electrical continuity verification for routing layers.
+\item \textbf{Critical-edge layer identification rule and inspection gate} (mandatory).
+\end{enumerate}
+
+\section{Key Update: Lift-off Edge Artifacts (``Fences'') Are a First-Order Hazard}
+When you lift off a metal, tiny ridges/residues can form at the edges of features. If you later deposit a very thin dielectric layer (the switching layer), those residues can:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item locally thin the dielectric,
+\item create local electric-field hot spots,
+\item short the device,
+\item or cause apparent ``switching'' that is actually edge damage.
+\end{itemize}
+
+\section{Critical-Edge Layer Identification}
+A metal layer is a \textbf{critical-edge layer} if it:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item sits beneath the active switching dielectric, and
+\item defines the active region boundary where the dielectric will be thin.
+\end{itemize}
+
+\section{Mandatory Inspection Gate (Critical-Edge Layers)}
+\textbf{Gate:} After patterning a critical-edge layer and \emph{before} depositing the thin switching dielectric:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item perform inspection at standard sites (optical minimum), and
+\item perform at least one higher-magnification inspection available in your environment (facility microscopy),
+\item apply acceptance criteria for edge cleanliness/topography.
+\end{itemize}
+Proceed only if the layer passes.
+
+\section{Decision Guidance (High Level)}
+\subsection{Prefer Lift-off When}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item etch chemistry is not available or is unsafe/incompatible,
+\item etch selectivity is poor and would damage underlying layers,
+\item geometry is simple and you can enforce a robust undercut profile.
+\end{itemize}
+
+\subsection{Prefer Etch When}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item edge cleanliness is critical (e.g., critical-edge metals),
+\item you need tighter dimensional control,
+\item multilayer stacks require repeatable sidewall profiles.
+\end{itemize}
+
+\section{Inspection Checklist (Minimum)}
+After transfer (lift-off or etch):
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Check for opens/shorts on continuity structures.
+\item Check for residues, edge roughness, and visible ``ears'' at metal edges.
+\item Record images at standard sites and attach them to the traveler.
+\item If the layer is critical-edge: apply the inspection gate and document pass/fail.
+\end{itemize}
+
+\section{Electrical Continuity Verification (Routing Layers)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Use predefined continuity chains and Kelvin structures.
+\item Record pass/fail and measured resistance values.
+\item If continuity fails, stop and determine whether failure is lithography, transfer, or film-related.
+\end{itemize}
+
+\section{Exit Criteria}
+Guide 07 is complete when:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item each baseline layer has a documented default transfer method,
+\item critical-edge layers are identified in the traveler,
+\item critical-edge inspection gates and acceptance criteria are defined and enforced.
+\end{itemize}
+
+\end{document}

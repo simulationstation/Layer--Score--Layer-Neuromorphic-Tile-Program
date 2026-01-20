@@ -1,0 +1,108 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 13: Compact Model Calibration and Hardware-in-the-Loop Simulation
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 13: Compact Model Calibration and Hardware-in-the-Loop Simulation},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 13}
+\newcommand{\GuideTitle}{Compact Model Calibration and Hardware-in-the-Loop Simulation}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Convert measured device behavior into predictive compact models that support design iteration, algorithm co-design, and benchmark evaluation under realistic variability.
+  \\
+  \\
+  \textbf{Scope note.} This guide defines modeling and validation workflows; it does not prescribe proprietary device physics equations. Models should be selected based on measurability, calibratability, and predictive utility.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Model family selection (fast, calibratable, aligned to measured dynamics)
+\item Parameter extraction scripts tied to measured datasets
+\item Validation protocol (withheld datasets; error reporting)
+\item Hardware-in-the-loop benchmark harness (simulation uses measured distributions)
+\item Model versioning and compatibility policy
+\end{enumerate}
+
+\section{Step-by-Step Procedure}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Select a minimal model family.} Choose a model that reproduces key measured observables (threshold behavior, volatility/decay, stochasticity distributions) while remaining simple enough to fit automatically.
+\item \textbf{Define parameter extraction mapping.} Specify which measured curves determine which parameters; record this mapping in code and documentation.
+\item \textbf{Automate fitting.} Implement scripts that produce parameter sets with confidence indicators (fit residuals, parameter bounds) and store them as versioned artifacts.
+\item \textbf{Validate on withheld data.} Hold out devices and entire runs. Report errors and identify failure regimes.
+\item \textbf{Integrate into a benchmark harness.} Use measured variability distributions (device-to-device and cycle-to-cycle) in simulations and training loops.
+\item \textbf{Publish model artifacts.} Release model code, parameter sets, and validation scripts as part of each tagged program release (Guide 15).
+\end{enumerate}
+
+\section{Common Failure Modes (and mitigations)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Overfitting to one run.} Mitigate by withholding entire runs and validating cross-run.
+\item \textbf{Model too slow.} Mitigate by simplifying and using piecewise approximations where justified.
+\item \textbf{Model not tied to measurable quantities.} Mitigate by restricting to parameters that map directly to measured observables.
+\end{itemize}
+
+\section{Exit Criteria}
+Guide 13 is complete when:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item model predictions are validated on withheld devices/runs,
+\item the model is predictive enough to guide a design decision,
+\item a subsequent fabrication run validates that decision directionally,
+\item model artifacts are reproducible from tagged releases.
+\end{itemize}
+
+\end{document}

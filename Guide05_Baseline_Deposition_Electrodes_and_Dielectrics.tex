@@ -1,0 +1,134 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 05: Baseline Deposition: Electrodes and Dielectrics
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 05: Baseline Deposition: Electrodes and Dielectrics},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 05}
+\newcommand{\GuideTitle}{Baseline Deposition: Electrodes and Dielectrics}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Standardize thin-film stacks and verification gates so device behavior is interpretable and repeatable. This guide explicitly prevents dielectric leakage and topography defects from masquerading as ``interesting'' switching physics.
+  \\
+  \\
+  \textbf{Key policy update.} The \emph{active switching dielectric} is \textbf{ALD-by-default}. Sputtered dielectrics may be used for the active layer only with documented rationale and demonstrated repeatability across runs.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Baseline electrode stacks (including Ag introduction plan)
+\item Baseline dielectric recipes (with active-layer method declared)
+\item Film verification checklist (thickness, roughness proxy, sheet resistance where relevant)
+\item Film quality gates and rework policy
+\item Leakage sanity-check protocol (before switching claims)
+\item Lot tracking for targets, precursors, and key consumables
+\end{enumerate}
+
+\section{Active Switching Dielectric Policy (ALD Default)}
+\textbf{Policy:} For the \emph{active switching dielectric layer}, \textbf{ALD is the default}.
+
+Sputtered dielectrics may be used for the active layer only if:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item you document a rationale (e.g., proven equivalence in your data),
+\item you pass leakage sanity checks and film quality gates, and
+\item you show run-to-run reproducibility.
+\end{itemize}
+
+Sputtered dielectrics remain acceptable for \textbf{passivation/encapsulation} layers where the primary function is coverage and protection rather than controlled switching physics.
+
+\section{Step-by-Step Procedure (High-Level, Facility-Compliant)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Choose a baseline stack and freeze it for the next two to three runs (avoid changing everything at once).
+\item For each film, define mandatory recorded parameters: tool ID, recipe ID, temperature, time, pre-clean used, and target/precursor lot.
+\item Define verification per film:
+  \begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item thickness measurement method and standard measurement locations,
+  \item surface inspection sites,
+  \item sheet resistance measurement method (if relevant).
+  \end{itemize}
+\item Define ``film quality gates'' (pass/fail) and actions if a film fails (rework versus scrap).
+\item Define the step at which Ag is introduced and prefer \textbf{late introduction} where feasible.
+\item After Ag introduction, explicitly list allowed/forbidden tool zones and steps (Guide 02 toolchain segregation).
+\end{enumerate}
+
+\section{Leakage Sanity-Check Gate (Minimum)}
+Before interpreting any behavior as switching dynamics, require:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item a pre-switch leakage measurement on representative test structures,
+\item a documented leakage threshold beyond which the film is considered unsuitable for physics claims,
+\item a recorded decision: ``film accepted'' or ``film rejected'' with evidence.
+\end{itemize}
+
+\section{Film Verification Checklist (Suggested)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Thickness: measured at standard sites; record mean and range.
+\item Surface inspection: optical images at standard sites; note particulate and defects.
+\item Roughness proxy: profilometry/AFM where available; record values and method.
+\item Sheet resistance (metals): record and compare to expected range.
+\item Adhesion sanity check: qualitative note (peel, lift, cracking observed or not).
+\end{itemize}
+
+\section{Exit Criteria}
+Guide 05 is complete when you can produce two independent runs in which:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item baseline films meet thickness/quality gates,
+\item leakage sanity checks pass for the active dielectric,
+\item device behavior remains in the same qualitative regime,
+\item differences are attributable to documented changes rather than undocumented deposition drift.
+\end{itemize}
+
+\end{document}

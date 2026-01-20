@@ -1,0 +1,146 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 09: Scoring Runbook (Localized Fine Features and Repair)
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 09: Scoring Runbook},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 09}
+\newcommand{\GuideTitle}{Scoring Runbook (Localized Fine Features and Repair)}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Define and enforce the rules for high-resolution ``scoring'' (localized fine-feature definition and repair) so it remains a scalpel rather than a throughput trap. This guide makes scoring usage a tracked KPI with explicit budgets and escalation triggers.
+  \\
+  \\
+  \textbf{Safety note.} This guide assumes scoring tools (e.g., EBL/FIB or equivalents) are operated in professional/shared facilities or by trained staff on commercial systems.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Purpose and Operating Principle}
+\textbf{Scoring must not be on the per-device critical path.} If scoring scales with array size, the program must redesign the process or accept a smaller scale target.
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Allowed vs forbidden scoring use-cases policy
+\item ROI budgets (maximum scored area per die and per run)
+\item Verification protocol (pre-score and post-score evidence)
+\item Score justification record (why it was needed; measurable benefit)
+\item \textbf{Scoring budget KPI and escalation triggers} (mandatory)
+\end{enumerate}
+
+\section{Policy: Allowed vs Forbidden Use-Cases}
+\subsection{Allowed}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Critical region definition in small ROIs when baseline lithography cannot meet requirements.
+\item Trim/repair of opens/shorts for research prototypes.
+\item Stitch fixes at known overlay-limited interfaces.
+\item Creation of master molds (optional), when replication is used later.
+\end{itemize}
+
+\subsection{Forbidden}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Full-area patterning or routine routing layers.
+\item Any use that scales linearly with array size without a formal exception.
+\item ``Convenience scoring'' without documented justification and evidence.
+\end{itemize}
+
+\section{Scoring Budget KPI (Mandatory)}
+\textbf{You must track these metrics for every run that uses scoring:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Total scored area per die (units: square micrometer, or square millimeter as appropriate).
+\item Total scored area per run.
+\item Number of scored ROIs per die.
+\item Scoring time per run (if measurable).
+\end{itemize}
+
+\section{Gate: Scoring Must Not Become Per-Device}
+\textbf{Gate rule:} If scoring is required for \emph{every device} (or scales linearly with array size), the process is considered \textbf{non-scalable} at the current node.
+
+\textbf{Required response (choose at least one):}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Redesign for baseline lithography capability.
+\item Reduce the target array size.
+\item Change topology to remove the fine-feature dependency.
+\item Document a formal exception and accept the throughput limitation.
+\end{itemize}
+
+\section{Escalation Triggers}
+\textbf{If either occurs in two consecutive runs:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item scored area exceeds the ROI budget, or
+\item scoring becomes a per-device necessity,
+\end{itemize}
+\textbf{then a redesign review is mandatory} before the next run is scheduled.
+
+\section{Step-by-Step Procedure (Operational)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Define scoring intent and ROI budgets in the traveler before scoring begins.
+\item Capture pre-score images at standard magnification and sites.
+\item Perform scoring only within approved ROIs.
+\item Capture post-score images (same sites and magnification).
+\item Perform an electrical sanity check if applicable.
+\item File a score justification record including measurable benefit and evidence.
+\end{enumerate}
+
+\section{Exit Criteria}
+Guide 09 is complete (operationally) when:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item scoring usage is bounded by explicit ROI budgets,
+\item scoring KPIs are logged in every run summary that uses scoring,
+\item scoring is not required per-device to achieve the target scale,
+\item any exceptions are documented and accepted as throughput tradeoffs.
+\end{enumerate}
+
+\end{document}

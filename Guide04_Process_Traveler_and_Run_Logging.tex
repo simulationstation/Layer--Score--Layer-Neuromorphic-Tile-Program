@@ -1,0 +1,118 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 04: Standard Process Traveler and Run Logging
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 04: Standard Process Traveler and Run Logging},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 04}
+\newcommand{\GuideTitle}{Standard Process Traveler and Run Logging}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Make every fabrication run auditable, comparable, and reproducible by capturing what was intended, what was done, what deviated, and what evidence was collected.
+  \\
+  \\
+  \textbf{Key updates.} This guide requires explicit logging of (i) the step at which Ag is first introduced, (ii) the sample state after Ag introduction, and (iii) the allowed toolchain zones for all subsequent steps.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Traveler template (per wafer/die/run)
+\item Deviation log template and deviation severity rubric
+\item Evidence capture protocol (photos, metrology, tool logs)
+\item Data storage schema and naming conventions
+\item Run summary template and minimum reporting requirements
+\end{enumerate}
+
+\section{Traveler Template: Minimum Required Fields}
+A traveler should include, at minimum:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Run ID, design revision, process revision, operator, facility/tool IDs, timestamps
+\item Sample IDs and sample state class (Guide 02)
+\item Step-by-step plan with expected outputs at each step
+\item Actual parameters used (recipe IDs and any manual overrides)
+\item Metrology checkpoints and measured values
+\item Deviation entries with reason and disposition
+\item ``Stop-the-line'' criteria (conditions requiring staff review before proceeding)
+\item \textbf{Ag introduction step} and \textbf{post-Ag allowed tool zones} (mandatory)
+\end{itemize}
+
+\section{Operational Procedure (Run Lifecycle)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Pre-run:} freeze design; prepare traveler; confirm tool bookings; confirm materials and sample states.
+\item \textbf{During run:} record actual parameters; capture required evidence; log deviations immediately.
+\item \textbf{Post-run (same day preferred):} upload raw data; generate standard plots via scripts; draft run summary.
+\item \textbf{Run review:} classify failures; decide next action; update model parameters if applicable.
+\end{enumerate}
+
+\section{Evidence Capture Protocol (Minimum)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Photos: before/after images at standard sites for each major step.
+\item Metrology: thickness, step height, and any agreed critical dimension checks.
+\item Tool logs: recipe IDs and actual parameter values used.
+\item Electrical spot checks: continuity chains or pad coupons when relevant.
+\end{itemize}
+
+\section{Exit Criteria}
+Guide 04 is complete when:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item every run has a unique ID and a traveler committed to the repo,
+\item deviations are logged consistently with evidence,
+\item a run summary exists for every run (including failed ones),
+\item raw data and metadata are sufficient for rerunning analysis scripts end-to-end.
+\end{itemize}
+
+\end{document}

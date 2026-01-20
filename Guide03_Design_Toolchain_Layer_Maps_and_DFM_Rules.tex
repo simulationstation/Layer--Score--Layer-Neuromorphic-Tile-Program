@@ -1,0 +1,127 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 03: Design Toolchain, Layer Maps, and DFM Rules
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 03: Design Toolchain, Layer Maps, and DFM Rules},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 03}
+\newcommand{\GuideTitle}{Design Toolchain, Layer Maps, and DFM Rules}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Standardize the design-to-fabrication interface: CAD toolchain, layer maps, DFM/DRC rules, alignment strategy, and standard test structures. \textbf{Updated emphasis:} pad/probing/packaging survivability requirements are design-time constraints (not a late-stage integration detail).
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Design repository structure and versioning policy
+\item Layer map (design layers \(\rightarrow\) fabricated layers) and naming conventions
+\item Alignment mark strategy (global/die/local) and standard vernier structures
+\item Standard test structure library (devices + metrology structures)
+\item DFM/DRC rule set per patterning tier (printed, maskless UV, scoring)
+\item Tapeout checklist and first-article protocol
+\item Padout and probing/packaging design rules (required for packaging readiness)
+\end{enumerate}
+
+\section{Step-by-Step Procedure}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Select CAD toolchain and define the ``source of truth'' file format (e.g., GDS/OASIS).
+\item Define repository structure (recommended: \texttt{/cad}, \texttt{/process}, \texttt{/test}, \texttt{/data}, \texttt{/models}, \texttt{/governance}).
+\item Create and freeze a project layer map early; treat changes as governance events.
+\item Define alignment marks and placement:
+  \begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item global/wafer marks (coarse alignment)
+  \item die marks (medium alignment)
+  \item local marks near critical devices (fine alignment)
+  \end{itemize}
+\item Create a standard library of test structures:
+  \begin{itemize}[leftmargin=*,itemsep=2pt]
+  \item isolated single devices
+  \item device arrays for statistical characterization
+  \item line resistance monitors and continuity chains
+  \item Kelvin structures for contact resistance
+  \item overlay verniers and CD monitors
+  \end{itemize}
+\item Define DFM/DRC rules per tier (min line/space, enclosures, via sizes, keep-outs).
+\item Create a tapeout checklist and enforce it for every run.
+\end{enumerate}
+
+\section{Padout and Probing/Packaging Rules (High Priority)}
+Packaging is a common late-stage failure mechanism. Therefore, padout and probing rules are required during layout.
+
+\subsection{Pad design checklist (minimum)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Pad geometry:} pad size and pitch must match intended probe tips and/or wirebond process.
+\item \textbf{Pad metallurgy:} pad surface must be probeable/bondable under the chosen process window.
+\item \textbf{Underlayer robustness:} avoid pad stacks too thin/soft for bonding force.
+\item \textbf{Keep-outs:} keep sensitive devices away from pad edge stress regions and from dicing streets.
+\item \textbf{Coupon region:} include a bond/probe coupon region with redundant pads and simple continuity structures.
+\end{itemize}
+
+\subsection{Early validation requirement}
+Before attempting full device arrays, the program requires at least one first-article validation of:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item pad survivability under probing and/or bonding,
+\item pad-to-routing continuity,
+\item susceptibility to oxidation/damage under handling.
+\end{itemize}
+
+\section{Exit Criteria}
+Guide 03 is complete when a third party can take your \texttt{/cad} package, your layer map, your DFM rules, and your padout rules and generate a facility-ready file set without asking what any layer means or whether pads are probe/bond compatible.
+
+\end{document}

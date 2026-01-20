@@ -1,0 +1,161 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 14: Packaging, Board Integration, and Tile Demonstration
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 14: Packaging, Board Integration, and Tile Demonstration},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 14}
+\newcommand{\GuideTitle}{Packaging, Board Integration, and Tile Demonstration}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Deliver system-level demonstrators that survive outside the probe station, with credible measurement boundaries and repeatable harnesses. This guide covers packaging mode choices, board-level integration, benchmark runners, and energy measurement boundaries.
+  \\
+  \\
+  \textbf{Key dependency.} Packaging readiness begins at design time (Guide 03 pad/probing rules). Probe-only success is not sufficient for tile claims.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Packaging selection guide by stage (probe, wirebond breakout, flip-chip/interposer)
+\item ESD and handling SOP for packaged parts
+\item Standard test board (power rails, biasing, measurement headers)
+\item Firmware/software harness for benchmarks and structured logging
+\item Energy measurement boundary statement (intrinsic device vs system-level)
+\item Packaging first-article coupon plan (pad survivability validation)
+\end{enumerate}
+
+\section{Stage-Appropriate Packaging Choices}
+\subsection{Probe-first (early phases)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Best for P0--P1 bring-up and rapid iteration.
+\item Requires pad design compatible with repeated probing (Guide 03).
+\item Risk: probe-induced damage and pad oxidation can create false ``device drift.''
+\end{itemize}
+
+\subsection{Wirebond breakout (mid phases)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Best for P2 arrays and early P3 tile harnesses.
+\item Requires pad metallurgy compatible with the chosen wirebond process window.
+\item Risk: yield loss at dicing/wirebond is common; validate with coupons.
+\end{itemize}
+
+\subsection{Flip-chip / interposer (later phases)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Best when I/O density and parasitics dominate performance.
+\item Higher cost and longer cycle time; typically not first choice.
+\end{itemize}
+
+\section{Packaging First-Article Requirement (Non-Optional)}
+\textbf{Requirement:} include a bond/probe coupon region in early designs to validate:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item pad metallization survivability under intended probe/bond process,
+\item pad-to-routing continuity,
+\item susceptibility to oxidation/damage under handling.
+\end{itemize}
+
+\section{Standard Test Board and Harness}
+\subsection{Board requirements}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Define power rails and bias rails; include measurement points for each.
+\item Include current sense points or shunts where appropriate.
+\item Provide shielding/grounding strategy appropriate to pulse measurements.
+\item Maintain a stable board revision across runs unless a formal revision is logged.
+\end{itemize}
+
+\subsection{Harness requirements}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Scripted benchmark runner (no manual ``demo mode'').
+\item Structured logging: run ID, device/tile ID, firmware version, environment.
+\item Automated plotting and report generation.
+\end{itemize}
+
+\section{Energy Measurement Boundaries (Discipline)}
+\subsection{Two boundaries to report when possible}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Intrinsic device energy:} tight boundary around the device event.
+\item \textbf{System energy per task:} measured at module input rails, from task-start to task-done.
+\end{itemize}
+
+\subsection{Boundary statement (required in every demo report)}
+Each demo report must include:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item what rails are included in energy integration,
+\item what is excluded and why,
+\item whether idle/baseline is subtracted (and how).
+\end{itemize}
+
+\section{Procedure (End-to-End)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Select packaging mode appropriate to the current phase and document it.
+\item Validate pads using coupon structures before packaging full arrays.
+\item Assemble packaged parts; apply ESD handling discipline.
+\item Bring up the standard test board and verify rail integrity.
+\item Run the benchmark runner end-to-end; store logs with run IDs matching the fabrication traveler.
+\item Report results with the defined energy boundary statement and confidence intervals where appropriate.
+\end{enumerate}
+
+\section{Exit Criteria}
+Guide 14 is complete when:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item a packaged tile or module can run a benchmark end-to-end using a reproducible harness,
+\item energy per task is reported with an explicit boundary definition,
+\item a third party can reproduce the demo using your board files, firmware/scripts, and documentation.
+\end{enumerate}
+
+\end{document}

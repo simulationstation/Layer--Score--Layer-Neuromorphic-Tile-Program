@@ -1,0 +1,437 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 01: Facility Access and Operating Model
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 01: Facility Access and Operating Model},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 01}
+\newcommand{\GuideTitle}{Facility Access and Operating Model}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Define a practical, step-by-step plan for gaining access to micro/nanofabrication facilities and operating them efficiently for the program. It covers: choosing an operating mode (hands-on vs staff-assisted vs remote), selecting facilities, preparing an outreach packet, onboarding, training strategy, budgeting and scheduling, and day-to-day operational discipline.
+  \\
+  \\
+  \textbf{Safety note.} This guide is about using professional/shared facilities and commercial equipment safely and compliantly. It is not a manual for building hazardous equipment.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{At a Glance}
+
+\subsection{Who this guide is for}
+This guide assumes you:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item have strong electronics lab skills (instrumentation, probing, ESD discipline),
+\item are comfortable with bachelor-level physics/circuits/materials concepts,
+\item have access to advanced software assistance and adequate funding,
+\item are new (or not expert) in cleanroom microfabrication operations and facility culture.
+\end{itemize}
+
+\subsection{What this guide produces (deliverables)}
+By completing this guide, you should have:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Operating Mode Decision Memo (1 page).} Which mode you are using and why.
+\item \textbf{Facility Shortlist (3--6 candidates).} With a scored comparison matrix.
+\item \textbf{Tool Requirement Matrix.} Must-have vs nice-to-have tools mapped to your near-term process.
+\item \textbf{Outreach Packet.} A small set of documents you send to facilities and potential collaborators.
+\item \textbf{Onboarding Checklist.} Accounts, agreements, safety training, tool qualifications, and access logistics.
+\item \textbf{Budget and Cadence Plan.} A realistic monthly burn estimate and run cadence.
+\item \textbf{Facility Q\&A Script.} A consistent set of questions to avoid surprises (especially contamination rules).
+\end{enumerate}
+
+\subsection{Why this guide matters}
+Most first-time external users fail for non-technical reasons:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item they pick a facility without the required tools \emph{or} without the required materials policies,
+\item they underestimate onboarding and training time,
+\item they propose ``big vision'' instead of a small, facility-friendly first run,
+\item they bring restricted materials (e.g., mobile metals) without a contamination plan,
+\item they do not budget for rework, metrology, and packaging.
+\end{itemize}
+
+\section{Cleanroom Access in Plain Language}
+
+\subsection{What a micro/nanofab facility is (layperson summary)}
+A micro/nanofabrication facility (``nanofab'' or ``cleanroom'') is a controlled environment where you build tiny structures on wafers or chips by repeatedly:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item depositing thin films (metals and dielectrics),
+\item patterning those films (lithography),
+\item removing material (etch) or removing resist/metal (lift-off),
+\item repeating to form multilayer stacks.
+\end{itemize}
+
+For your program, the facility is not optional: thin-film quality, patterning, and planarity determine whether a diffusive-memristor device behaves reproducibly.
+
+\subsection{What ``external user'' means}
+Most major nanofabs support external users:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Academic users:} university labs, PIs, students.
+\item \textbf{Industry/startup users:} companies paying cost-recovery rates.
+\item \textbf{Sponsored/partner users:} funded collaborations where staff assistance is part of the agreement.
+\end{itemize}
+
+External use typically requires:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item a facility use agreement,
+\item safety training and tool training,
+\item billing setup,
+\item compliance with tool-specific contamination rules.
+\end{itemize}
+
+\subsection{Why facilities care about contamination (especially mobile metals)}
+Facilities protect expensive tools and other users' work. Some materials are restricted because tiny traces can:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item poison subsequent processes,
+\item degrade yield for sensitive CMOS users,
+\item create difficult-to-diagnose reliability problems.
+\end{itemize}
+
+\textbf{Practical implication:} your first facility conversations should focus less on ``how cool the neuron is'' and more on ``can we safely run these materials in your toolchain.''
+
+\subsection{New critical question (mobile-metal handling in shared vacuum tools)}
+Even if you plan to encapsulate mobile metals, many facilities treat encapsulation as risk reduction rather than risk elimination. Therefore add this non-negotiable question to your first call:
+\begin{quote}
+\emph{Do you accept encapsulated mobile metals in shared vacuum tools, or must we use a segregated toolset end-to-end for the entire flow?}
+\end{quote}
+
+\section{Step-by-Step Procedure}
+
+\subsection{Step 1: Choose your operating mode (decision tree)}
+\textbf{Goal:} Decide how you will actually run fabrication, based on your experience, schedule, and risk tolerance.
+
+\subsubsection{1.1 The four realistic modes}
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item \textbf{Mode A: You operate tools yourself (trained user).}\\
+Pros: maximum control, fastest iteration once trained, lower long-run cost.\\
+Cons: training time is real; tool access and competency gates can take months; mistakes are costly.
+
+\item \textbf{Mode B: Staff-assisted use (facility staff runs critical steps).}\\
+Pros: faster initial progress; fewer operator mistakes; better for complex tools (ALD, CMP, high-resolution tools).\\
+Cons: higher cost; scheduling dependency.
+
+\item \textbf{Mode C: Remote ``foundry model'' (you deliver designs; staff executes).}\\
+Pros: fastest onboarding for non-experts; professional execution; lower personal training burden.\\
+Cons: less flexibility for rapid changes; requires strong documentation and communication.
+
+\item \textbf{Mode D: Partner with a PI/lab (sponsored research or hired staff).}\\
+Pros: facility access is native; lab has process intuition; staffing scales; highest probability of success.\\
+Cons: requires relationship management; IP/publication expectations must be clarified; timelines depend on people.
+\end{enumerate}
+
+\subsubsection{1.2 Recommended operating mode for this program (early phase)}
+For a well-funded electronics-lab operator who is new to microfab operations, the highest probability approach is:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Start in \textbf{Mode B or C} for the first 2--4 fabrication iterations,
+\item transition to \textbf{Mode A} for a narrow set of safe, repeatable tools,
+\item consider \textbf{Mode D} if you want to scale to more complex integration quickly.
+\end{itemize}
+
+\subsubsection{1.3 Make the decision explicit}
+Write a 1-page decision memo:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item chosen mode (A/B/C/D),
+\item why you chose it,
+\item what would make you switch modes,
+\item what tools/steps you will never do without staff assistance (at least initially).
+\end{itemize}
+
+\textbf{Output:} Operating Mode Decision Memo v1.0.
+
+\subsection{Step 2: Translate your near-term device plan into tool requirements}
+\textbf{Goal:} Create a short list of must-have tools and nice-to-have tools, mapped to a minimal viable process.
+
+\subsubsection{2.1 Start with a minimal viable device objective}
+For facility onboarding, do \emph{not} pitch ``full tile'' as the first run. Pitch something facility-friendly:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{First-run objective:} Fabricate simple diffusive-memristor test structures (e.g., MIM stacks) and characterize volatility and threshold statistics.
+\end{itemize}
+
+\subsubsection{2.2 Define your ``Must-have tool'' set}
+A typical must-have set for early diffusive-memristor work:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Deposition:} PVD metal deposition.
+\item \textbf{Active dielectric deposition:} ALD is recommended as a default for the active switching dielectric.
+\item \textbf{Patterning:} maskless lithography or photolithography; liftoff capability.
+\item \textbf{Etch/clean:} plasma cleaning and/or RIE suitable for the dielectric.
+\item \textbf{Metrology:} optical inspection; thickness measurement.
+\item \textbf{Electrical test:} probe station access.
+\end{itemize}
+
+\subsubsection{2.3 Define your ``Nice-to-have'' tool set}
+Useful later:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item CMP planarization,
+\item EBL or FIB for localized scoring/repair,
+\item advanced microscopy,
+\item packaging support.
+\end{itemize}
+
+\subsubsection{2.4 Create a one-page tool requirement matrix}
+Use Table~\ref{tab:toolmatrix} template and fill it.
+
+\begin{longtable}{@{}P{3.0cm}P{5.0cm}P{3.0cm}P{4.0cm}@{}}
+\caption{Tool Requirement Matrix Template (fill for each facility).}
+\label{tab:toolmatrix}\\
+\toprule
+\textbf{Process Need} & \textbf{Tool Type} & \textbf{Must / Nice} & \textbf{Facility Notes} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Process Need} & \textbf{Tool Type} & \textbf{Must / Nice} & \textbf{Facility Notes} \\
+\midrule
+\endhead
+Metal electrodes & Sputter / evaporation & Must & allowed metals; toolset segregation \\
+Active dielectric film & ALD dielectric & Must & precursor restrictions; thermal budget \\
+Patterning & Maskless lithography / stepper & Must & min feature; overlay \\
+Pattern transfer & Liftoff; RIE; wet etch & Must & etch chemistries; compatibility \\
+Cleaning & Plasma cleaning & Must & contamination classes \\
+Planarization & CMP & Nice & availability; staff-assisted? \\
+Fine ``scoring'' & EBL / FIB / equivalent & Nice & ROI limitation; scheduling \\
+Metrology & Optical, profilometer, ellipsometer & Must & access policy \\
+Electrical test & Probe station & Must & who can probe; allowed voltages \\
+Packaging & Dicing / wirebond & Nice & staff assistance; cost \\
+\bottomrule
+\end{longtable}
+
+\textbf{Output:} Tool Requirement Matrix v1.0.
+
+\subsection{Step 3: Build a facility shortlist (3--6 candidates)}
+\textbf{Goal:} Avoid falling in love with the first facility you find.
+
+\subsubsection{3.1 Define selection criteria}
+Score each facility on:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Tool coverage,}
+\item \textbf{Materials policy fit} (including whether encapsulated mobile metals can enter shared vacuum tools),
+\item \textbf{Operating mode support} (staff-assisted/remote),
+\item \textbf{Cadence feasibility,}
+\item \textbf{Cost transparency,}
+\item \textbf{Metrology/testing,}
+\item \textbf{Onboarding speed.}
+\end{itemize}
+
+\subsubsection{3.2 Use a scored comparison matrix}
+Fill Table~\ref{tab:facilitymatrix}. Use a 1--5 scale (1 = poor, 5 = excellent).
+
+\begin{longtable}{@{}P{3.2cm}P{1.2cm}P{1.2cm}P{1.2cm}P{1.2cm}P{1.2cm}P{1.2cm}P{3.2cm}@{}}
+\caption{Facility Shortlist Scoring Matrix Template.}
+\label{tab:facilitymatrix}\\
+\toprule
+\textbf{Facility} & \textbf{Tools} & \textbf{Policy} & \textbf{Mode} & \textbf{Cadence} & \textbf{Cost} & \textbf{Metrology} & \textbf{Notes} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Facility} & \textbf{Tools} & \textbf{Policy} & \textbf{Mode} & \textbf{Cadence} & \textbf{Cost} & \textbf{Metrology} & \textbf{Notes} \\
+\midrule
+\endhead
+Facility A &  &  &  &  &  &  &  \\
+Facility B &  &  &  &  &  &  &  \\
+Facility C &  &  &  &  &  &  &  \\
+Facility D &  &  &  &  &  &  &  \\
+\bottomrule
+\end{longtable}
+
+\textbf{Output:} Facility Shortlist v1.0.
+
+\subsection{Step 4: Build the outreach packet (what you send to facilities)}
+\textbf{Goal:} Make it easy for facilities to say ``yes.''
+
+\subsubsection{4.1 Packet contents (recommended)}
+Keep it short and professional:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{One-page project brief.}
+\item \textbf{Materials disclosure sheet.}
+\item \textbf{Process outline (high-level).}
+\item \textbf{Tool requirement matrix.}
+\item \textbf{Operating mode request.}
+\item \textbf{Safety/contamination posture.}
+\item \textbf{Scheduling and budget intent.}
+\end{enumerate}
+
+\subsubsection{4.2 How to phrase the first-run objective}
+Facilities respond well to small, concrete objectives:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item ``We want to fabricate MIM test devices to measure volatile switching and statistical variability.''
+\item ``We will start with a small number of wafers/dies and publish a reproducibility dataset.''
+\end{itemize}
+
+\textbf{Output:} Outreach Packet v1.0.
+
+\subsection{Step 5: Run the first facility call (script + agenda)}
+\textbf{Goal:} Identify deal-breakers and define onboarding.
+
+\subsubsection{5.1 Suggested agenda (30--45 minutes)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Introductions and first-run objective.
+\item Tool capability fit.
+\item Materials/contamination policy fit.
+\item Operating mode options.
+\item Administrative onboarding steps.
+\item Next steps.
+\end{enumerate}
+
+\subsubsection{5.2 The critical questions to ask (non-negotiable)}
+\textbf{Materials and contamination}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Are Ag-bearing samples allowed? Under what restrictions?
+\item \textbf{Do you accept encapsulated mobile metals in shared vacuum tools, or must we use segregated tools end-to-end?}
+\item Which toolsets are dedicated/segregated?
+\item Is encapsulation required before specific tools? What qualifies?
+\end{itemize}
+
+\textbf{Tools and process}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Do you have ALD suitable for our active dielectric?
+\item Is maskless lithography available to external users? Typical overlay?
+\item Do you have RIE/plasma cleaning suitable for our dielectric system?
+\item Do you have CMP or planarization options?
+\end{itemize}
+
+\textbf{Operating model and administrative}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Can staff run steps for external users? Billing model?
+\item Is remote fabrication supported?
+\item Agreements, billing, lead times, and scheduling constraints?
+\end{itemize}
+
+\textbf{Output:} Facility Call Notes + Action Items.
+
+\subsection{Step 6: Complete onboarding (accounts, agreements, safety)}
+Common components:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item registration, agreements, insurance,
+\item safety training,
+\item tool training and qualification,
+\item badge and scheduling access.
+\end{itemize}
+
+\textbf{Output:} Onboarding Checklist.
+
+\subsection{Step 7: Build a realistic budget and cadence plan}
+Budget categories:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item onboarding/training fees,
+\item tool hourly charges and staff recharge,
+\item consumables and materials,
+\item metrology time,
+\item packaging/dicing,
+\item travel,
+\item contingency for rework/failed runs.
+\end{itemize}
+
+Define what a ``run'' is and set an early cadence (often monthly runs + weekly analysis cycles).
+
+\textbf{Output:} Budget + Cadence Plan.
+
+\subsection{Step 8: Establish day-to-day facility operating discipline}
+\subsubsection{8.1 Pre-run readiness checklist (minimum)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item design frozen and version-tagged,
+\item traveler reviewed,
+\item materials confirmed,
+\item sample state and segregation plan approved,
+\item measurement plan ready,
+\item backup plan for tool downtime.
+\end{itemize}
+
+\subsubsection{8.2 Tool day checklist (minimum)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item before/after photos,
+\item record recipe IDs and parameters,
+\item log deviations immediately,
+\item label and store samples in correct state.
+\end{itemize}
+
+\subsubsection{8.3 Post-run checklist (minimum)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item upload raw data same day,
+\item regenerate plots by script,
+\item write run summary,
+\item update compact model if applicable.
+\end{itemize}
+
+\textbf{Output:} Facility Operating SOP v1.0.
+
+\section{Common Pitfalls and How to Avoid Them}
+\subsection{Pitfall A: ``We need EBL for everything''}
+If you depend on EBL/FIB as the main patterning method, throughput collapses.\
+\textbf{Mitigation:} maskless lithography is the backbone; scoring is ROI-limited.
+
+\subsection{Pitfall B: ``Encapsulation makes mobile metals universally safe''}
+Encapsulation reduces risk but does not eliminate it.\
+\textbf{Mitigation:} ask the explicit shared-vacuum question; build a segregated flow if required.
+
+\subsection{Pitfall C: ``We can skip metrology to save money''}
+Skipping metrology creates mystery failures.\
+\textbf{Mitigation:} mandatory metrology checkpoints.
+
+\subsection{Pitfall D: ``We will document later''}
+Later never comes.\
+\textbf{Mitigation:} travelers, deviation logs, and script-generated plots from day one.
+
+\section{Exit Criteria: When you are done with Guide 01}
+You have completed Guide 01 when:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item operating mode is selected and documented,
+\item shortlist of candidate facilities is scored,
+\item at least one facility/toolchain can execute the first-run objective without policy contradictions after Ag introduction,
+\item outreach packet exists,
+\item onboarding checklist exists with owners/dates,
+\item budget/cadence supports at least three iterations.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,137 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 15: Release Engineering for Open-Source Reproducibility
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 15: Release Engineering for Open-Source Reproducibility},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 15}
+\newcommand{\GuideTitle}{Release Engineering for Open-Source Reproducibility}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Ensure every claim is reproducible: tagged datasets, scripts, environment definitions, and governance. This guide defines versioning, releases, data packaging, and contributor processes.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Purpose and Philosophy}
+Release engineering is the enforcement mechanism for ``no data, no claim.'' The goal is that a third party can regenerate figures and metrics from a release tag without informal communication.
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Versioning scheme (design/process/model/benchmark)
+\item Release checklist and gate criteria
+\item Data packaging format (raw + derived + metadata) and integrity checks
+\item Contribution guidelines (schemas, review gates)
+\item Governance process for changes affecting comparability (RFC workflow)
+\end{enumerate}
+
+\section{Versioning Scheme}
+Define separate versions for:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Design} (layout revision, padout changes, test structure changes)
+\item \textbf{Process} (traveler revision, tool/recipe changes, materials lot changes)
+\item \textbf{Model} (parameter set revision, model code revision)
+\item \textbf{Benchmark} (dataset/preprocess revision)
+\end{itemize}
+
+\section{What Constitutes a Release}
+A release is a tagged set of artifacts that includes:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item a specific design revision and process revision,
+\item raw datasets with metadata,
+\item analysis scripts that regenerate all reported figures,
+\item model code and parameter sets (if used),
+\item a release note summarizing results, limitations, and environment.
+\end{itemize}
+
+\section{Release Checklist (Minimum)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Tag repository commit(s) and record tag in release note.
+\item Freeze raw data and metadata (read-only).
+\item Validate that scripts regenerate figures from raw data.
+\item Validate that environment definitions (dependencies) are complete.
+\item Confirm KPIs and measurement boundaries are unchanged or explicitly versioned.
+\item Publish known limitations and failure regimes.
+\end{enumerate}
+
+\section{Data Packaging and Integrity}
+Recommended rules:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Every dataset includes metadata: run ID, device ID, tool/recipe IDs, timestamps, materials lots, sample states.
+\item Use deterministic filenames and directory structure (by run ID and device ID).
+\item Include integrity checks (hashes) for raw data bundles.
+\end{itemize}
+
+\section{Contribution and Governance}
+\subsection{Contribution rules}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Contributions that alter schemas or KPI definitions require an RFC.
+\item Data contributions must meet minimum metadata completeness.
+\item Code contributions must include tests or validation notebooks where applicable.
+\end{itemize}
+
+\subsection{RFC workflow}
+An RFC is required for changes that affect comparability, including:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item KPI definitions,
+\item measurement boundaries,
+\item data schemas,
+\item benchmark selection or preprocessing.
+\end{itemize}
+
+\section{Exit Criteria}
+Guide 15 is complete when external replicators can regenerate figures and metrics from release artifacts within stated uncertainty, using your published scripts and schemas.
+
+\end{document}

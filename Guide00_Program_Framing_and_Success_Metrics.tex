@@ -1,0 +1,363 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 00: Program Framing and Success Metrics
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 00: Program Framing and Success Metrics},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 00}
+\newcommand{\GuideTitle}{Program Framing and Success Metrics}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Define a rigorous, layperson-accessible program charter for an open, reproducible neuromorphic hardware effort. This guide locks scope, success metrics, benchmarks, measurement boundaries, phase gates, and pivot rules so the program converges.
+  \\
+  \\
+  \textbf{Safety note.} This guide is an engineering planning document. It is not a manual for constructing hazardous systems (high-voltage electron columns, vacuum pressure vessels, toxic gases). It assumes fabrication is performed in professional/shared facilities or with commercial systems, under appropriate safety controls and trained operators.
+  \\
+  \\
+  \textbf{Materials note.} The program assumes silver (Ag) is used where technically advantageous. The guide treats Ag as operationally restricted in contamination-control terms (tool zoning, sample states, late introduction discipline).
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{At a Glance}
+
+\subsection{Who this guide is for}
+This guide assumes the operator:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item has strong electronics technician lab skills (instrumentation, debugging, PCB work, ESD discipline),
+\item has adequate funding and access to advanced software assistance,
+\item is comfortable with bachelor-level physics/circuits/materials concepts,
+\item does \emph{not} necessarily have deep cleanroom process development experience.
+\end{itemize}
+
+\subsection{What this guide produces (deliverables)}
+By completing this guide, you will produce five core documents that govern the entire project:
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Program Charter (1--3 pages).} Mission, scope, non-goals, guiding principles, definition of success.
+\item \textbf{KPI \& Measurement Boundary Sheet (1--2 pages).} Exactly what metrics you report and what is included/excluded.
+\item \textbf{Benchmark Plan (1--2 pages).} The workloads used to justify ``processor-equivalent'' outcomes.
+\item \textbf{Phase Gates \& Stop/Pivot Rules (1--2 pages).} When you advance; when you iterate; when you change direction.
+\item \textbf{Decision Log + Risk Register (living documents).} Traceable choices, risks, mitigations, triggers, and owners.
+\end{enumerate}
+
+\subsection{Why this matters}
+Hardware R\&D programs fail most often due to:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item unbounded scope (``we can also add X, Y, Z''),
+\item metrics that are not comparable run-to-run,
+\item energy/performance claims that shift due to unclear measurement boundaries,
+\item lack of pivot rules (teams keep iterating on a dead-end stack),
+\item poor reproducibility (no raw data, missing metadata, manual plots).
+\end{itemize}
+This guide is designed to eliminate those failure modes early.
+
+\section{Before You Start: A Mental Model That Prevents Scope Collapse}
+
+\subsection{The single most important framing decision}
+Do not anchor the program on ``build a modern laptop CPU from scratch.'' That is a manufacturing-scale objective requiring leading-edge lithography, extreme overlay control, high-yield FEOL transistor formation, and industrial statistical process control.
+
+Instead, define success in one of these credible meanings:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Workload-equivalent compute (recommended).} ``Equivalent'' means: on a chosen workload, your tile hits a target for energy, accuracy, and (optionally) latency.
+\item \textbf{Hybrid module equivalence (also recommended).} ``Equivalent'' means: a packaged module containing your tile plus a commodity controller can replace a CPU for a specific embedded job.
+\item \textbf{General-purpose ISA CPU equivalence (not recommended early).} Treat this as long-term aspiration, not a phase gate.
+\end{enumerate}
+
+\subsection{A simple rule that prevents scope creep}
+\textbf{Rule:} Every new idea must tie to one of your defined KPIs and must have a measurement plan. If you cannot measure it, you do not build it.
+
+\section{Critical Cliffs and Program Controls (Non-Optional)}
+These are the points where projects most commonly die. They are treated as explicit constraints and gates:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Mobile-metal operational segregation (Ag).} Plan toolchain zones, sample states, and late introduction. Encapsulation reduces risk; it does not eliminate risk.
+\item \textbf{Active dielectric quality.} Do not interpret leakage-dominated behavior as neuromorphic dynamics. Active dielectric quality gates are mandatory.
+\item \textbf{Passive-array scaling wall.} Passive arrays are characterization-first unless a selector strategy or transistor backplane is proven under the intended bias scheme.
+\item \textbf{Scoring throughput.} Scoring must not become per-device. Scoring budgets are KPIs and gates.
+\item \textbf{Packaging survivability.} Pad/probing/packaging constraints are design-time requirements, not late-stage integration tasks.
+\end{itemize}
+
+\section{Step-by-Step Procedure}
+
+\subsection{Step 1: Write a one-paragraph mission}
+\textbf{Goal:} Produce a single paragraph a facility manager, PI, or collaborator can understand immediately.
+
+Write the mission using this structure:
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Problem:} what limitation you are targeting (energy, latency, always-on sensing, etc.).
+\item \textbf{Hypothesis:} why volatile/diffusive memristive dynamics can help (physics-native temporal processing).
+\item \textbf{Deliverable:} what you will deliver physically and digitally (devices, arrays, tiles, open datasets, models).
+\item \textbf{Impact:} why it matters.
+\end{enumerate}
+
+\subsection{Step 2: Define scope, non-goals, and guiding principles}
+\textbf{Goal:} Bound the program so it can finish.
+
+\subsubsection{2.1 In scope (recommended)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Single-device test structures for volatile switching characterization.
+\item Neuron-like spiking primitives (external circuitry acceptable early).
+\item Small arrays (e.g., $16\times16$ to $128\times128$) and yield mapping.
+\item Hybrid integration approaches (BEOL memristor layers on pre-fabricated CMOS, where feasible).
+\item Open measurement automation, data schemas, compact models, and benchmark harnesses.
+\end{itemize}
+
+\subsubsection{2.2 Out of scope (recommended)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Building a modern laptop-class CPU from raw silicon in-house.
+\item Any attempt to obtain proprietary trade secrets or non-public process details.
+\item Instructions for constructing hazardous equipment (HV electron columns, vacuum pressure vessels, toxic gas systems).
+\end{itemize}
+
+\subsubsection{2.3 Guiding principles (choose 4--8)}
+Recommended principles:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{No data, no claim.}
+\item \textbf{Every run produces a dataset.}
+\item \textbf{Scoring is a scalpel, not a factory.}
+\item \textbf{Maskless lithography is the backbone.}
+\item \textbf{Reproducibility over hero demos.}
+\item \textbf{Document deviations.}
+\end{itemize}
+
+\subsection{Step 3: Define what ``processor-equivalent'' means}
+\textbf{Goal:} Lock a measurable equivalence claim that you can win.
+
+Choose one primary claim type:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Workload-equivalent}: win on a specific temporal workload class.
+\item \textbf{Hybrid module}: win as a tile + controller module on a specific embedded job.
+\end{itemize}
+
+\textbf{Rule:} In early releases, compare on at most \textbf{two} primary axes (e.g., energy per task and accuracy).
+
+\subsection{Step 4: Define phases and gates}
+\textbf{Goal:} Prevent premature scaling and enforce sequence.
+
+\subsubsection{Phase P0: Single-device truth}
+\textbf{Gate to exit P0 must include:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item evidence that behavior is not dominated by dielectric leakage or measurement artifacts,
+\item repeatable switching regime across a meaningful number of devices,
+\item at least one compact model fit that reproduces key measured behaviors.
+\end{itemize}
+
+\subsubsection{Phase P1: Neuron primitive truth}
+\textbf{Gate to exit P1 must include:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item repeatable spiking-like behavior under scripted stimulation,
+\item documented parameter sweeps stable across multiple devices and at least two runs.
+\end{itemize}
+
+\subsubsection{Phase P2: Array truth}
+\textbf{Gate to exit P2 must include:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item array yield map and failure classification with evidence,
+\item explicit statement whether array is characterization-only or addressable compute,
+\item if claiming addressable scaling: demonstrated selector strategy or transistor backplane viability under intended bias scheme.
+\end{itemize}
+
+\subsubsection{Phase P3: Tile/system truth}
+\textbf{Gate to exit P3 must include:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item packageable die with validated pads and harness,
+\item end-to-end benchmark run with honest measurement boundaries.
+\end{itemize}
+
+\subsection{Step 5: Select 1--2 benchmark workloads and define win conditions}
+For each benchmark define:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item required accuracy $A_{\min}$,
+\item maximum energy per task $E_{\mathrm{task,max}}$,
+\item optional latency bound $T_{\max}$,
+\item dataset and preprocessing version locks.
+\end{itemize}
+
+\subsection{Step 6: Define KPI sets and measurement boundaries}
+You need KPIs at device, neuron, array, and tile levels, plus explicit measurement boundaries.
+
+\subsubsection{Pulse energy (continuous-time definition)}
+\[
+E \;=\; \int_{t_0}^{t_1} V(t)\, I(t)\, dt
+\]
+
+\textbf{Explainer table (every symbol defined):}
+\begin{center}
+\begin{tabular}{@{}P{2.2cm}P{9.7cm}P{2.0cm}@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Units} \\
+\midrule
+$E$ & Electrical energy consumed during the event window & joule \\
+$t$ & Time (continuous variable) & second \\
+$t_0$ & Start time of the integration window & second \\
+$t_1$ & End time of the integration window & second \\
+$V(t)$ & Voltage across the device as a function of time & volt \\
+$I(t)$ & Current through the device as a function of time & ampere \\
+$\int$ & Integration operator over time & none \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Pulse energy (sampled-data approximation)}
+\[
+E \;\approx\; \sum_{k=0}^{N-1} V_k\, I_k\, \Delta t
+\]
+
+\textbf{Explainer table (every symbol defined):}
+\begin{center}
+\begin{tabular}{@{}P{2.2cm}P{9.7cm}P{2.0cm}@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} & \textbf{Units} \\
+\midrule
+$E$ & Approximate electrical energy over the sampled window & joule \\
+$k$ & Sample index & none \\
+$N$ & Number of samples & none \\
+$V_k$ & Voltage sample at index $k$ & volt \\
+$I_k$ & Current sample at index $k$ & ampere \\
+$\Delta t$ & Sampling interval & second \\
+$\sum$ & Summation over sample index & none \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Step 7: Define stop/pivot rules (tiered pivots)}
+\textbf{Goal:} Avoid infinite iteration on a dead-end path.
+
+\subsubsection{Tiered pivot framework}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item \textbf{Pivot Tier 1 (within neuromorphic):} pivot architecture/circuits first.
+\item \textbf{Pivot Tier 2 (integration pivot):} pivot to 1T1R earlier if sneak paths block scaling.
+\item \textbf{Pivot Tier 3 (deliverable pivot):} pivot deliverable class if trend and root-cause do not support continuation.
+\end{enumerate}
+
+\subsection{Step 8: Define open reproducibility requirements}
+Every published claim must include raw data, metadata, scripts, and a README.
+
+\subsection{Step 9: Build the initial risk register}
+Include the cliffs explicitly: Ag segregation, dielectric leakage, lift-off fences, sneak paths, scoring throughput, packaging yield, measurement artifacts, data management.
+
+\subsection{Step 10: Assemble the Program Charter packet}
+Bundle: charter, equivalence definition, phases/gates, benchmark plan, KPI/boundary sheet, pivots, and risk register.
+
+\appendix
+\section{Appendix A: Templates}
+
+\subsection{A1. Program Charter template (headings)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Mission
+\item Why now
+\item Scope and non-goals
+\item Definition of success
+\item Phases and gates
+\item Benchmarks
+\item KPIs
+\item Measurement boundaries
+\item Stop/pivot rules
+\item Reproducibility policy
+\item Risks and mitigations
+\end{enumerate}
+
+\subsection{A2. KPI sheet template (headings)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Device KPIs
+\item Neuron KPIs
+\item Array KPIs
+\item Tile/system KPIs
+\item Notes and caveats
+\end{itemize}
+
+\subsection{A3. Decision log template (fields)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Date
+\item Decision
+\item Options considered
+\item Evidence used
+\item Risk assessment
+\item Next actions
+\item Owner
+\end{itemize}
+
+\subsection{A4. Risk register template (fields)}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Risk ID
+\item Description
+\item Severity
+\item Likelihood
+\item Trigger
+\item Mitigation
+\item Owner
+\item Status
+\end{itemize}
+
+\section{Appendix B: ``Max Capability'' Leverage (AI + Funding)}
+\subsection{B1. Auditable software assistance}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item auto-generate travelers and checklists from a single source of truth,
+\item auto-check dataset completeness,
+\item auto-generate run summaries with human sign-off,
+\item propose DOE parameter sweeps to reduce trial count.
+\end{itemize}
+
+\subsection{B2. Spend on bottlenecks with compounding returns}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item measurement automation,
+\item ALD access for active dielectrics,
+\item planarity access,
+\item packaging and repeatable test harnesses.
+\end{itemize}
+
+\end{document}

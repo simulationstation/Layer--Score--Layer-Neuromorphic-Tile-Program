@@ -1,0 +1,135 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 11: Neuron Behavior Bring-up
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 11: Neuron Behavior Bring-up},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 11}
+\newcommand{\GuideTitle}{Neuron Behavior Bring-up}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Prove neuron-like spiking behavior in a controlled, measurable, repeatable way, and define promotion criteria from single-device physics (Guide 10) to arrays (Guide 12).
+  \\
+  \\
+  \textbf{Safety note.} This guide assumes professional instrumentation and safe operating practice. It is not a manual for hazardous equipment construction.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Minimal neuron test harness definition (external circuitry acceptable initially)
+\item Standard stimulation protocols (pulse trains) and expected observables
+\item Parameter sweep plan (biases, pulse width, spacing) with logging requirements
+\item Metrics and promotion criteria for advancing to arrays
+\end{enumerate}
+
+\section{Layperson Summary}
+A ``neuron primitive'' here means a hardware element that produces spike-like events (sudden conductance changes or voltage/current pulses) in response to inputs and then resets (volatility) without complex digital control. Early stages may rely on external resistors/transistors/controllers to create a stable test harness. The objective is not to claim a biological neuron is replicated perfectly; it is to demonstrate repeatable, tunable spiking dynamics that are useful for temporal processing.
+
+\section{Step-by-Step Procedure}
+
+\subsection{Step 1: Define the minimal test harness}
+\textbf{Goal:} Create a controlled environment for stimulating the device and measuring response.
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Define input stimulus source (pulse generator or SMU pulse mode) and output measurement path (scope/SMU) with bandwidth requirements.
+\item Define any external circuit elements used (e.g., resistor network, compliance elements, transistor gating).
+\item Define measurement reference points (where voltage is measured, where current is sensed).
+\item Calibrate the setup and record calibration state in the dataset metadata.
+\end{enumerate}
+
+\subsection{Step 2: Define standard stimulation protocols}
+\textbf{Goal:} Use consistent inputs so results are comparable across devices and runs.
+
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Single-pulse threshold probe protocol
+\item Pulse-train protocol for spiking-rate response (frequency sweep)
+\item Burst protocol to evaluate adaptation/history dependence
+\item Idle/rest protocol to quantify reset/volatility behavior
+\end{itemize}
+
+\subsection{Step 3: Execute parameter sweeps}
+\textbf{Goal:} Establish tunability and stability.
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Sweep pulse amplitude while holding width/spacing fixed.
+\item Sweep pulse width while holding amplitude/spacing fixed.
+\item Sweep inter-pulse interval (spacing) while holding amplitude/width fixed.
+\item For each sweep, store raw waveforms when feasible and store derived metrics with full metadata.
+\end{enumerate}
+
+\subsection{Step 4: Compute neuron-level metrics}
+\textbf{Minimum metrics:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Spike rate as a function of input stimulus
+\item Refractory-like behavior (if present): minimum time between spikes under fixed input
+\item Adaptation (if claimed): spike-rate change over repeated stimulation
+\item Stochasticity: distribution of spike timing or threshold under repeated identical stimuli
+\end{itemize}
+
+\subsection{Step 5: Apply promotion criteria (P1 gate)}
+\textbf{Promotion criteria examples:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Behavior is reproducible across multiple devices, not a single ``hero'' device.
+\item Behavior persists across at least two fabrication runs (process repeatability).
+\item Artifact checks indicate the setup is not generating the spikes (e.g., grounding, bandwidth, compliance artifacts).
+\item The behavior is tunable within a useful range (for the chosen benchmark class).
+\end{itemize}
+
+\section{Exit Criteria}
+Guide 11 is complete when neuron-like behavior is demonstrated reproducibly across multiple devices and at least two fabrication runs, with scripted stimulation and data logging sufficient for an external replicator to rerun the analysis.
+
+\end{document}

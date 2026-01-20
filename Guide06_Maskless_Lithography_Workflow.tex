@@ -1,0 +1,141 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 06: Maskless Lithography Workflow
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 06: Maskless Lithography Workflow},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 06}
+\newcommand{\GuideTitle}{Maskless Lithography Workflow}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Make maskless optical lithography the throughput backbone with repeatable alignment and predictable pattern quality. This guide defines standard resist stacks, alignment verification, exposure logging, diagnostics, and first-article procedure.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item Standard resist stacks for (a) metal lift-off and (b) dielectric etch patterns.
+\item Bake/develop workflow with acceptable process windows and logging requirements.
+\item Alignment procedure and verification method (verniers) and standard image capture sites.
+\item Exposure parameter logging and re-use rules.
+\item Failure mode atlas (scumming, footing, undercut loss, edge bead, residues).
+\item First-article procedure for each new design revision.
+\end{itemize}
+
+\section{Layperson Overview (What matters and why)}
+Maskless lithography is your ``factory line'' for prototypes: it controls which parts of each layer exist and where they land. Most downstream failures that look like ``memristor physics'' are actually caused by:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item misalignment between layers (overlay error),
+\item incomplete development or residue (creating shorts/leaks),
+\item poor lift-off profile (creating fences),
+\item topography that exceeds focus margin.
+\end{itemize}
+This guide standardizes the workflow so you are not reinventing a process window every run.
+
+\section{Step-by-Step Procedure}
+
+\subsection{Step 1: Define standard resist stacks}
+\textbf{Goal:} avoid per-layer improvisation.
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Choose a default lift-off resist strategy and a default etch resist strategy compatible with facility tools.
+\item Define bake times/temperatures and developer type/time as controlled variables.
+\item Define ``do not change without justification'' parameters for the next two to three runs.
+\end{enumerate}
+
+\subsection{Step 2: Alignment strategy and mark usage}
+\textbf{Goal:} reproducible overlay.
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Use multi-scale alignment marks (global, die, local).
+\item Define which marks are used for which layers.
+\item Define vernier structures and locations for overlay measurement.
+\item Require image capture at standard vernier sites after alignment.
+\end{enumerate}
+
+\subsection{Step 3: Exposure logging (non-negotiable)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Record exposure mode, dose/energy settings, write strategy, focus settings (if applicable), and pattern file version/hash.
+\item Record deviations: if you changed dose or focus mid-run, log it immediately.
+\item Attach key images (alignment screen captures, post-develop microscope images).
+\end{enumerate}
+
+\subsection{Step 4: Post-pattern inspection gates}
+\textbf{Goal:} detect preventable failures early.
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Define ``must inspect'' sites and features (pads, critical device regions, verniers).
+\item Define what triggers rework (gross residue, collapsed features, major overlay error).
+\item If a gate fails, stop and document; do not proceed to irreversible depositions.
+\end{enumerate}
+
+\subsection{Step 5: Diagnostics atlas (build as you go)}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Maintain a reference set of failure photos with likely causes.
+\item Link each failure mode to a decision: rework, scrap, or proceed.
+\end{enumerate}
+
+\subsection{Step 6: First-article procedure}
+\textbf{Goal:} avoid surprises when designs change.
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item For each new design revision, run a first-article check on a small subset.
+\item Verify alignment, critical dimensions (where measurable), and pad integrity.
+\item Only then proceed to full-run execution.
+\end{enumerate}
+
+\section{Exit Criteria}
+Guide 06 is complete when the same operator can produce repeatable patterns and overlay (within program needs) on two different days without ad-hoc parameter hunting, and when exposure/alignment logs are sufficient for another operator to reproduce the run.
+
+\end{document}

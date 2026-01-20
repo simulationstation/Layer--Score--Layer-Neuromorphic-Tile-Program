@@ -1,0 +1,154 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 10: Single-Device Characterization Suite
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=darkblue,
+  urlcolor=darkblue,
+  citecolor=darkblue,
+  pdftitle={Guide 10: Single-Device Characterization Suite},
+  pdfauthor={Open Research Draft}
+}
+
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 10}
+\newcommand{\GuideTitle}{Single-Device Characterization Suite}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Define a standardized electrical and metrology characterization suite for single devices that produces publishable switching statistics, includes artifact controls, and outputs reproducible datasets suitable for modeling and benchmarking.
+  \\
+  \\
+  \textbf{Safety note.} This guide assumes use of professional instrumentation and facility-approved probing/handling practices.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Instrumentation configuration standard (SMUs, pulse generator, oscilloscope, probe station) and calibration procedure.
+\item Standard test definitions: DC sweeps (where appropriate), pulsed threshold tests, volatility decay, endurance cycling, optional temperature dependence.
+\item Data schema (raw waveforms + metadata + derived metrics) and naming conventions.
+\item Failure classification labels (open, short, stuck-on, stuck-off, drift) and annotation rules.
+\item Minimum sample size requirements for any claim (number of devices and number of cycles).
+\item Artifact check protocol (controls to rule out test-setup-induced behavior).
+\end{enumerate}
+
+\section{Why This Guide Exists (Layperson Summary)}
+In early memristor work, it is easy to ``see'' spikes, switching, or analog behavior that is actually caused by:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item measurement bandwidth limitations,
+\item cabling and grounding artifacts,
+\item compliance current settings,
+\item leakage through poor dielectrics,
+\item probe contact instability.
+\end{itemize}
+This guide forces a disciplined measurement workflow so that device claims are credible and comparable across runs.
+
+\section{Step-by-Step Procedure}
+
+\subsection{Step 1: Define and record the instrumentation stack}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item List instruments and identifiers (model, serial number) used for each measurement role.
+\item Define cabling and probe configuration (including any amplifiers or filters).
+\item Record calibration state and date.
+\item Record measurement bandwidth (scope/sample rate) for waveform captures.
+\end{enumerate}
+
+\subsection{Step 2: Establish a standard dataset structure}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Define run IDs that link back to the fabrication traveler.
+\item Store raw waveform data when feasible (do not only store extracted features).
+\item Store metadata: device coordinates, pad ID, toolchain state, temperature (if measured), and instrument settings.
+\end{enumerate}
+
+\subsection{Step 3: Execute the standard test suite}
+\textbf{Minimum recommended suite:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item \textbf{Threshold characterization (pulsed):} determine the distribution of switching thresholds under defined pulse widths.
+\item \textbf{Volatility/decay:} measure relaxation back to baseline conductance as a function of time.
+\item \textbf{Endurance/drift:} cycle devices and track threshold/decay drift.
+\item \textbf{Optional:} temperature dependence and hold-time dependence.
+\end{itemize}
+
+\subsection{Step 4: Compute and report distributions}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Compute device-to-device and cycle-to-cycle distributions (threshold, decay constant, event energy).
+\item Report summary statistics and distribution plots using scripts.
+\item Store derived metrics alongside raw data with clear provenance.
+\end{enumerate}
+
+\subsection{Step 5: Run artifact checks (non-negotiable)}
+\textbf{Controls should include:}
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item open-circuit or dummy structures (no active device) under the same stimulation,
+\item bandwidth sanity checks (repeat with different sampling rates where practical),
+\item probe contact stability checks,
+\item compliance-current and series-resistance sensitivity checks.
+\end{itemize}
+
+\section{Minimum Sample Sizes (Policy)}
+Any claim intended for external release should, at minimum, specify:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item number of devices measured $N_{\mathrm{dev}}$,
+\item number of cycles per device $N_{\mathrm{cyc}}$,
+\item number of independent fabrication runs $N_{\mathrm{run}}$.
+\end{itemize}
+(If you formalize these symbols in equations, include a symbol-definition table.)
+
+\section{Exit Criteria}
+Guide 10 is complete when:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item two independent runs produce comparable datasets using the same schema and scripts,
+\item raw waveforms and metadata are sufficient to regenerate plots end-to-end,
+\item artifact checks demonstrate the behavior is not measurement-induced,
+\item failure modes are classified consistently.
+\end{itemize}
+
+\end{document}

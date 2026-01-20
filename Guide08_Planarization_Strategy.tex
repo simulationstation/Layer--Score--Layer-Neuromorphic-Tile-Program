@@ -1,0 +1,95 @@
+% Standalone LaTeX file (Overleaf-ready)
+% Guide 08: Planarization Strategy
+% Compile with: PDFLaTeX
+
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{fancyhdr}
+
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.5}
+\hypersetup{colorlinks=true, linkcolor=darkblue, urlcolor=darkblue, citecolor=darkblue, pdftitle={Guide 08: Planarization Strategy}, pdfauthor={Open Research Draft}}
+\sisetup{detect-all=true}
+
+\newcommand{\ProgramName}{Layer--Score--Layer Neuromorphic Tile Program}
+\newcommand{\GuideID}{Guide 08}
+\newcommand{\GuideTitle}{Planarization Strategy}
+\newcommand{\DocVersion}{v1.1 (standalone)}
+\newcommand{\DocDate}{\today}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\GuideID: \GuideTitle}
+\rhead{\DocVersion}
+\cfoot{\thepage}
+
+\begin{document}
+
+\begin{titlepage}
+  \centering
+  \vspace*{1.0in}
+  {\LARGE \GuideID: \GuideTitle\par}
+  \vspace{0.25in}
+  {\Large \ProgramName\par}
+  \vspace{0.35in}
+  {\large \DocVersion\par}
+  \vspace{0.10in}
+  {\large \DocDate\par}
+  \vfill
+  \begin{minipage}{0.93\textwidth}
+  \small
+  \textbf{Purpose.} Prevent overlay and focus collapse in multilayer stacks by explicitly managing topography and planarity. This guide defines the planarity approach, metrology checkpoints, acceptance limits, and rework policies.
+  \end{minipage}
+  \vspace*{0.6in}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Core Deliverables}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Chosen planarity path (CMP, planarizing dielectric + etch-back, or low-topography design constraints)
+\item Metrology plan for topography (profilometry/AFM sites and sampling plan)
+\item Maximum allowable step-height policy before the next lithography step
+\item Rework policy and escalation rules
+\item Reporting requirements (planarity metrics included in every run summary)
+\end{enumerate}
+
+\section{Step-by-Step Procedure}
+\subsection{Step 1: Choose your planarity approach}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Decide your planarity method for the next two to three runs and document it.
+\item If CMP is used, define whether it is staff-assisted or operator-run, and define the measurement gate after CMP.
+\item If dielectric + etch-back is used, define thickness targets and etch-back stopping criteria.
+\item If low-topography constraints are used, document design constraints (layer count limits, routing constraints, max metal thickness).
+\end{enumerate}
+
+\subsection{Step 2: Define metrology sites and cadence}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Choose standard sites (per die/wafer) where step height and thickness will be measured.
+\item Define the cadence: after each major deposition, after each pattern transfer, and after any planarization step.
+\item Record all measurements in the traveler (Guide 04) with tool IDs and timestamps.
+\end{enumerate}
+
+\subsection{Step 3: Define acceptance limits and rework policy}
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item Define a maximum allowable step height before the next lithography step.
+\item Define what happens when the limit is exceeded: planarize, redesign, or stop.
+\item Define escalation rules: when a failure triggers staff review or a program pivot.
+\end{enumerate}
+
+\section{Exit Criteria}
+Guide 08 is complete when multilayer runs show stable alignment and pattern quality without unexplained failures attributable to topography.
+
+\end{document}
